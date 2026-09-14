@@ -1,0 +1,50 @@
+@model List<AttendanceRecord>
+
+<h4>Today's Attendance</h4>
+<div class="card p-3">
+    @{
+        var today = ViewBag.Today as AttendanceRecord;
+    }
+    @if (today == null)
+    {
+        <form method="post" asp-action="CheckIn">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-success">Check-In</button>
+        </form>
+    }
+    else
+    {
+        <p>Check-In: <b>@today.CheckInTime?.ToString("hh:mm tt")</b></p>
+        @if (today.CheckOutTime == null)
+        {
+            <form method="post" asp-action="CheckOut">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-warning">Check-Out</button>
+            </form>
+        }
+        else
+        {
+            <p>Check-Out: <b>@today.CheckOutTime?.ToString("hh:mm tt")</b> @(today.IsAutoCheckout ? "(Auto)" : "")</p>
+            <p>Total Hours: <b>@today.TotalHours</b></p>
+        }
+    }
+</div>
+
+<h4 class="mt-4">This Month's Attendance History</h4>
+<table class="table table-bordered table-sm bg-white">
+    <thead>
+        <tr><th>Date</th><th>Check-In</th><th>Check-Out</th><th>Hours</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var rec in Model.OrderByDescending(r => r.AttendanceDate))
+        {
+            <tr>
+                <td>@rec.AttendanceDate.ToString("dd-MMM-yyyy")</td>
+                <td>@rec.CheckInTime?.ToString("hh:mm tt")</td>
+                <td>@rec.CheckOutTime?.ToString("hh:mm tt") @(rec.IsAutoCheckout ? "(Auto)" : "")</td>
+                <td>@rec.TotalHours</td>
+                <td>@rec.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

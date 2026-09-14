@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AttendanceSystem.Contracts.Services\AttendanceSystem.Contracts.Services.csproj" />
+    <ProjectReference Include="..\AttendanceSystem.Contracts.Repository\AttendanceSystem.Contracts.Repository.csproj" />
+  </ItemGroup>
+</Project>

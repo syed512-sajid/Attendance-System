@@ -1,0 +1,52 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem", "AttendanceSystem\AttendanceSystem.csproj", "{7423AD70-8FA0-46B1-922B-D09523E68E88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem.Models", "AttendanceSystem.Models\AttendanceSystem.Models.csproj", "{A04797B2-F0F0-461A-9E7F-87701E4854B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem.Contracts.Repository", "AttendanceSystem.Contracts.Repository\AttendanceSystem.Contracts.Repository.csproj", "{50EAFD96-5FA4-4C05-850E-F29995246A27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem.Contracts.Services", "AttendanceSystem.Contracts.Services\AttendanceSystem.Contracts.Services.csproj", "{89D0CD15-00AE-47DA-AE6E-7208086A26D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem.Repository", "AttendanceSystem.Repository\AttendanceSystem.Repository.csproj", "{D6174EC8-3C07-4B9F-8597-7C2C7569BEDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem.Services", "AttendanceSystem.Services\AttendanceSystem.Services.csproj", "{F28041A9-8B67-4602-B9C1-39AEC6E8AA52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7423AD70-8FA0-46B1-922B-D09523E68E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7423AD70-8FA0-46B1-922B-D09523E68E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7423AD70-8FA0-46B1-922B-D09523E68E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7423AD70-8FA0-46B1-922B-D09523E68E88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04797B2-F0F0-461A-9E7F-87701E4854B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04797B2-F0F0-461A-9E7F-87701E4854B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04797B2-F0F0-461A-9E7F-87701E4854B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04797B2-F0F0-461A-9E7F-87701E4854B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50EAFD96-5FA4-4C05-850E-F29995246A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50EAFD96-5FA4-4C05-850E-F29995246A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50EAFD96-5FA4-4C05-850E-F29995246A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50EAFD96-5FA4-4C05-850E-F29995246A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D0CD15-00AE-47DA-AE6E-7208086A26D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D0CD15-00AE-47DA-AE6E-7208086A26D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D0CD15-00AE-47DA-AE6E-7208086A26D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D0CD15-00AE-47DA-AE6E-7208086A26D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6174EC8-3C07-4B9F-8597-7C2C7569BEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6174EC8-3C07-4B9F-8597-7C2C7569BEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6174EC8-3C07-4B9F-8597-7C2C7569BEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6174EC8-3C07-4B9F-8597-7C2C7569BEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F28041A9-8B67-4602-B9C1-39AEC6E8AA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F28041A9-8B67-4602-B9C1-39AEC6E8AA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F28041A9-8B67-4602-B9C1-39AEC6E8AA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F28041A9-8B67-4602-B9C1-39AEC6E8AA52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

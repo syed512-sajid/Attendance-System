@@ -1,0 +1,58 @@
+﻿@model List<LeaveBalance>
+@{
+    var employees = ViewBag.Employees as List<Employee>;
+}
+
+<h4>Leave Balance - @ViewBag.Year</h4>
+<div class="card p-3">
+    <form method="get" asp-action="Index" class="row g-2">
+        <div class="col-md-2">
+            <label>Year</label>
+            <input type="number" name="year" class="form-control" value="@ViewBag.Year" />
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">View</button>
+        </div>
+    </form>
+</div>
+
+<h4 class="mt-4">Assign / Update Leave Balance</h4>
+<div class="card p-3">
+    <form method="post" asp-action="Assign" class="row g-2">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="year" value="@ViewBag.Year" />
+        <div class="col-md-4">
+            <label>Employee</label>
+            <select name="employeeId" id="lbEmployeeId" class="form-control form-select" required>
+                @foreach (var e in employees)
+                {
+                    <option value="@e.EmployeeID">@e.FullName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Total Leaves (@ViewBag.Year)</label>
+            <input type="number" name="totalLeaves" id="lbTotalLeaves" class="form-control" min="0" value="14" required />
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Save</button>
+        </div>
+    </form>
+</div>
+
+<table class="table table-bordered table-sm bg-white mt-3">
+    <thead><tr><th>Employee</th><th>Total Leaves</th><th>Used</th><th>Remaining</th></tr></thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeName</td>
+                <td>@item.TotalLeaves</td>
+                <td>@item.UsedLeaves</td>
+                <td>@item.RemainingLeaves</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<input type="hidden" id="lbYear" value="@ViewBag.Year" />
+<input type="hidden" id="lbGetBalanceUrl" value="@Url.Action("GetBalance")" />

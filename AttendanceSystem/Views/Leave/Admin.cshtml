@@ -1,0 +1,238 @@
+@model List<LeaveRequest>
+@{
+    var employees = ViewBag.Employees as List<Employee>;
+}
+
+<h4>Assign Leave (Admin)</h4>
+
+<div class="card p-3">
+    <form method="post" asp-action="Assign" class="row g-2" id="assignLeaveForm">
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-2">
+            <label>Employee</label>
+            <select name="employeeId" class="form-control form-select" required>
+                @foreach (var e in employees)
+                {
+                    <option value="@e.EmployeeID">@e.FullName</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label>Leave Type</label>
+            <select name="leaveType" id="aLeaveType" class="form-control" required>
+                <option value="Full Day">Full Day</option>
+                <option value="Half Day">Half Day</option>
+                <option value="Short Leave">Short Leave (Hourly)</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label>From</label>
+            <input type="date"
+                   name="fromDate"
+                   id="aFromDate"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="col-md-2" id="aToDateGroup">
+            <label>To</label>
+            <input type="date"
+                   name="toDate"
+                   id="aToDate"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="col-md-2 d-none" id="aSessionGroup">
+            <label>Session</label>
+            <select name="halfDaySession" class="form-control">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-none" id="aHoursGroup">
+            <label>Hours</label>
+            <input type="number"
+                   name="hours"
+                   class="form-control"
+                   min="0.5"
+                   max="8"
+                   step="0.5"
+                   value="3" />
+        </div>
+
+        <div class="col-md-2 d-none" id="aFromTimeGroup">
+            <label>From Time</label>
+            <input type="time"
+                   name="fromTime"
+                   id="aFromTime"
+                   class="form-control"
+                   step="1800"
+                   value="09:00" />
+        </div>
+
+        <div class="col-md-2 d-none" id="aToTimeGroup">
+            <label>To Time</label>
+            <input type="time"
+                   name="toTime"
+                   id="aToTime"
+                   class="form-control"
+                   step="1800"
+                   value="11:00" />
+        </div>
+
+        <div class="col-md-3 mt-2">
+            <label>Reason</label>
+            <input type="text"
+                   name="reason"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-1 mt-1 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+                Assign
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<h4 class="mt-4">All Leave Requests</h4>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm bg-white">
+
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>From Time</th>
+                <th>To Time</th>
+                <th>Details</th>
+                <th>Reason</th>
+                <th>Requested By</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var l in Model)
+            {
+                <tr>
+                    <td>@l.EmployeeName</td>
+
+                    <td>@l.LeaveType</td>
+
+                    <td>
+                        @l.FromDate.ToString("dd-MMM-yyyy")
+                    </td>
+
+                    <td>
+                        @l.ToDate.ToString("dd-MMM-yyyy")
+                    </td>
+
+                    <td>
+                        @if (l.LeaveType == "Short Leave" && l.FromTime.HasValue)
+                        {
+                            @DateTime.Today.Add(l.FromTime.Value).ToString("hh:mm tt")
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (l.LeaveType == "Short Leave" && l.ToTime.HasValue)
+                        {
+                            @DateTime.Today.Add(l.ToTime.Value).ToString("hh:mm tt")
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (l.LeaveType == "Half Day")
+                        {
+                            @l.HalfDaySession
+                        }
+                        else if (l.LeaveType == "Short Leave")
+                        {
+                            @if (l.Hours.HasValue)
+                            {
+                                @($"{l.Hours:0.##} hrs")
+                            }
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+
+                    <td>@l.Reason</td>
+
+                    <td>@l.RequestedBy</td>
+
+                    <td>
+                        @{
+                            var badge = l.Status switch
+                            {
+                                "Approved" => "success",
+                                "Rejected" => "danger",
+                                "Cancelled" => "secondary",
+                                _ => "warning"
+                            };
+                        }
+
+                        <span class="badge bg-@badge">
+                            @l.Status
+                        </span>
+                    </td>
+
+                    <td>
+                        @if (l.Status == "Pending")
+                        {
+                            <form method="post"
+                                  asp-action="Approve"
+                                  class="d-inline">
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="leaveId"
+                                       value="@l.LeaveID" />
+
+                                <button class="btn btn-sm btn-success">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <form method="post"
+                                  asp-action="Reject"
+                                  class="d-inline">
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="leaveId"
+                                       value="@l.LeaveID" />
+
+                                <button class="btn btn-sm btn-danger">
+                                    Reject
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

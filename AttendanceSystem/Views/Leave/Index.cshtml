@@ -1,0 +1,170 @@
+@model List<LeaveRequest>
+@{
+    var balance = ViewBag.Balance as LeaveBalance;
+}
+
+<h4>My Leave Balance (@DateTime.Today.Year)</h4>
+<div class="card p-3">
+    <div class="row text-center">
+        <div class="col-4">
+            <div class="fs-3 fw-bold">@balance.TotalLeaves</div>
+            <div class="text-muted small">Total</div>
+        </div>
+        <div class="col-4">
+            <div class="fs-3 fw-bold text-warning">@balance.UsedLeaves.ToString("0.##")</div>
+            <div class="text-muted small">Used</div>
+        </div>
+        <div class="col-4">
+            <div class="fs-3 fw-bold text-success">@balance.RemainingLeaves.ToString("0.##")</div>
+            <div class="text-muted small">Remaining</div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-4">Submit Leave Request</h4>
+<div class="card p-3">
+    <form method="post" asp-action="SubmitRequest" class="row g-2" id="leaveRequestForm">
+        @Html.AntiForgeryToken()
+        <div class="col-md-2">
+            <label>Leave Type</label>
+            <select name="leaveType" id="leaveType" class="form-control" required>
+                <option value="Full Day">Full Day</option>
+                <option value="Half Day">Half Day</option>
+                <option value="Short Leave">Short Leave (Hourly)</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label>From Date</label>
+            <input type="date" name="fromDate" id="fromDate" class="form-control" required />
+        </div>
+        <div class="col-md-2" id="toDateGroup">
+            <label>To Date</label>
+            <input type="date" name="toDate" id="toDate" class="form-control" required />
+        </div>
+        <div class="col-md-2 d-none" id="sessionGroup">
+            <label>Session</label>
+            <select name="halfDaySession" id="halfDaySession" class="form-control">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-none" id="hoursGroup">
+            <label>From Time</label>
+            <input type="time" name="fromTime" id="fromTime" class="form-control" step="1800" value="09:00" />
+        </div>
+        <div class="col-md-2 d-none" id="toTimeGroup">
+            <label>To Time</label>
+            <input type="time" name="toTime" id="toTime" class="form-control" step="1800" value="11:00" />
+        </div>
+        <div class="col-md-2">
+            <label>Reason</label>
+            <input type="text" name="reason" class="form-control" required />
+        </div>
+        <div class="col-md-2 d-flex align-items-end mt-2">
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+<h4 class="mt-4">My Leave Requests</h4>
+
+<table class="table table-bordered table-sm bg-white">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>From Date</th>
+            <th>From Time</th>
+            <th>To Date</th>
+            <th>To Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Requested By</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var l in Model)
+        {
+            <tr>
+                <td>@l.LeaveType</td>
+
+                <!-- From Date -->
+                <td>
+                    @l.FromDate.ToString("dd-MMM-yyyy")
+                </td>
+
+                <!-- From Time -->
+                <td>
+                    @if (l.FromTime.HasValue)
+                    {
+                        @DateTime.Today.Add(l.FromTime.Value).ToString("hh:mm tt")
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+
+                <!-- To Date -->
+                <td>
+                    @l.ToDate.ToString("dd-MMM-yyyy")
+                </td>
+
+                <!-- To Time -->
+                <td>
+                    @if (l.ToTime.HasValue)
+                    {
+                        @DateTime.Today.Add(l.ToTime.Value).ToString("hh:mm tt")
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+
+                <td>@l.Reason</td>
+
+                <td>
+                    @{
+                        var badge = l.Status switch
+                        {
+                            "Approved" => "success",
+                            "Rejected" => "danger",
+                            "Cancelled" => "secondary",
+                            _ => "warning"
+                        };
+                    }
+
+                    <span class="badge bg-@badge">
+                        @l.Status
+                    </span>
+                </td>
+
+                <td>@l.RequestedBy</td>
+
+                <td>
+                    @if (l.Status == "Pending")
+                    {
+                        <form method="post"
+                              asp-action="Cancel"
+                              data-confirm="Cancel this leave request?">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="leaveId"
+                                   value="@l.LeaveID" />
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-danger">
+                                Cancel
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

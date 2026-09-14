@@ -1,0 +1,81 @@
+@model List<MonthlyReportItem>
+@{
+    var employees = ViewBag.Employees as List<Employee>;
+}
+
+<h4>Monthly Report</h4>
+
+<div class="card p-3">
+    <form method="get" asp-action="Index" class="row g-2">
+
+        <div class="col-md-3">
+            <label>Employee</label>
+            <select name="employeeId" id="reportEmployeeId" class="form-control form-select">
+                <option value="">-- All Employees --</option>
+
+                @foreach (var e in employees)
+                {
+                    <option value="@e.EmployeeID"
+                            selected="@(ViewBag.EmployeeId == e.EmployeeID)">
+                        @e.FullName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label>Year</label>
+            <input type="number"
+                   name="year"
+                   class="form-control"
+                   value="@ViewBag.Year" />
+        </div>
+
+        <div class="col-md-2">
+            <label>Month</label>
+            <input type="number"
+                   name="month"
+                   min="1"
+                   max="12"
+                   class="form-control"
+                   value="@ViewBag.Month" />
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit"
+                    class="btn btn-primary w-100">
+                View Report
+            </button>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <a class="btn btn-success w-100" target="_blank" asp-action="Export" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" asp-route-employeeId="@ViewBag.EmployeeId">Download Excel</a>
+        </div>
+
+    </form>
+</div>
+
+<table class="table table-bordered table-sm bg-white mt-3">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Present Days</th>
+            <th>Leave Days</th>
+            <th>Absent Days</th>
+            <th>Total Hours</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeName</td>
+                <td>@item.PresentDays</td>
+                <td>@item.LeaveDays</td>
+                <td>@item.AbsentDays</td>
+                <td>@item.TotalHours</td>
+            </tr>
+        }
+    </tbody>
+</table>

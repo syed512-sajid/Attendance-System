@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>attendance-system-secrets</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AttendanceSystem.Models\AttendanceSystem.Models.csproj" />
+    <ProjectReference Include="..\AttendanceSystem.Contracts.Repository\AttendanceSystem.Contracts.Repository.csproj" />
+    <ProjectReference Include="..\AttendanceSystem.Contracts.Services\AttendanceSystem.Contracts.Services.csproj" />
+    <ProjectReference Include="..\AttendanceSystem.Repository\AttendanceSystem.Repository.csproj" />
+    <ProjectReference Include="..\AttendanceSystem.Services\AttendanceSystem.Services.csproj" />
+  </ItemGroup>
+</Project>
